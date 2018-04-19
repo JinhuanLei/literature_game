@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Literature Game</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<style>
+    #myowncanvas{
+        background: #ffd;
+    }
+</style>
+</head>
+
+
+<body>
+<div>
+    <nav class="navbar navbar-inverse">
+        <button type="button" class="btn btn-default navbar-btn navbar-right" style="margin-right: 20px" onclick="start()">Initial</button>
+        <button type="submit" class="btn btn-default navbar-btn navbar-right" style="margin-right: 20px" onclick="addCard()">Add Card</button>
+    </nav>
+
+<div class="col-md-10 col-md-offset-1">
+    <div class="col-md-10">
+        <div class="col-md-2 ">
+            <label>Team A</label>
+        </div>
+       <div class="col-md-2 col-md-offset-1">
+           <button type="submit" class="btn btn-primary" onclick="viewCards('1')">player 1</button>
+       </div>
+
+        <div class="col-md-2 col-md-offset-1">
+            <button type="submit" class="btn btn-primary" onclick="viewCards('2')">player 2</button>
+        </div>
+            <div class="col-md-2 col-md-offset-1">
+                <button type="submit" class="btn btn-primary" onclick="viewCards('3')">player 3</button>
+            </div>
+    </div>
+    <div class="col-md-10">
+        <canvas id="myowncanvas" width="1300" height="600" style="z-index:1"></canvas>
+    </div>
+    <div class="col-md-10">
+        <div class="col-md-2 ">
+            <label>Team B</label>
+        </div>
+        <div class="col-md-2 col-md-offset-1">
+            <button type="submit" class="btn btn-primary" onclick="viewCards('4')">player 4</button>
+        </div>
+        <div class="col-md-2 col-md-offset-1">
+            <button type="submit" class="btn btn-primary" onclick="viewCards('5')">player 5</button>
+        </div>
+        <div class="col-md-2 col-md-offset-1">
+            <button type="submit" class="btn btn-primary" onclick="viewCards('6')">player 6</button>
+        </div>
+        <!--<div class="col-md-2 col-md-offset-1">-->
+            <!--<button type="submit" class="btn btn-primary" onclick="addCard()">Add</button>-->
+        <!--</div>-->
+    </div>
+    <div id="menu" style="z-index:1; position: absolute; top:100px; left:50px; display: none"  class="col-md-10">
+        <!--<div>-->
+        <div class="col-md-3">
+            <label>Choose your opponent :</label>
+            <select class="form-control" style="" id="players">
+                <option>Player 1</option>
+                <option>Player 2</option>
+                <option>Player 3</option>
+                <option>Player 4</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label>Choose your suit :</label>
+            <select class="form-control" style="" id="suits">
+                <option value="h" selected="selected">&hearts; Hearts</option>
+                <option value="d">&diams; Diamonds</option>
+                <option value="s">&spades; Spades</option>
+                <option value="c">&clubs; Clubs</option>
+            </select>
+        </div>
+            <div class="col-md-3">
+                <label>Choose your point :</label>
+                <select class="form-control" style="" id="points">
+                    <option value="h" selected="selected">A</option>
+                    <option value="d">3</option>
+                    <option value="s">4</option>
+                    <option value="c">5</option>
+                    <option value="c">6</option>
+                    <option value="c">7</option>
+                    <option value="c">8</option>
+                    <option value="c">9</option>
+                    <option value="c">10</option>
+                    <option value="c">J</option>
+                    <option value="c">Q</option>
+                    <option value="c">K</option>
+                </select>
+            </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary" onclick="requestCard()" style="margin-top: 25px">Request Card</button>
+        </div>
+
+        <div class="col-md-10">
+            <label style="color: #873920;"> The User does not have that card ! Ready to change next User !</label>
+        </div>
+        <div class="col-md-10">
+            <label style="color:darkgreen;"> Congratulations ! you get that card .</label>
+        </div>
+    </div>
+    <!--</div>-->
+
+</div>
+
+
+</div>
+<script src="js/poker.js"></script>
+<script src="js/app.js"></script>
+<script src="js/jquery.popupwindow.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>
