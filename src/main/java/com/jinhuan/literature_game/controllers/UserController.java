@@ -6,14 +6,15 @@ import com.jinhuan.literature_game.models.player;
 import com.jinhuan.literature_game.models.team;
 import com.jinhuan.literature_game.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 public class UserController {
@@ -34,24 +35,69 @@ public class UserController {
         game.setPlayers(lip);
         game.setTeams(lit);
         g=game;
+//        req.session.game=game;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
-        System.out.println("start mvc");
+//        System.out.println("start mvc");
         return new ModelAndView("index.html");
     }
 
     @RequestMapping(value = "/api/v1/game", method = RequestMethod.GET)
-    public game initialGame() {
+    public game initialGame(HttpSession session) {
         System.out.println("start mvc");
 
-
+        session.setAttribute("game",g);
         return g;
 
     }
 
+    public int getPlayerID(String player){
+        String regEx="[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(player);
+        int pid=Integer.parseInt(m.replaceAll("").trim());
+        return pid;
+    }
 
+    @RequestMapping(value = "/api/v1/game", method = RequestMethod.POST)
+    public game requestCard(HttpSession session, @RequestParam String oplayer, @RequestParam String cplayer, @RequestParam String suit, @RequestParam String point) {
+        System.out.println(suit);
+
+   game g=(game)session.getAttribute("game");
+   List<player> l=g.getPlayers();
+
+        for(int x=0;x<l.size();x++){
+//                      System.out.println(l.get(x).getId()+" "+getPlayerID(oplayer));
+       if(l.get(x).getId()==getPlayerID(oplayer)){
+
+           List<card> lc=l.get(x).getCards();
+
+           for(int y=0;y<lc.size();y++){
+//               System.out.println((lc.get(y).getPoint()==point)+"  "+(lc.get(y).getSuit()==suit));
+//               System.out.println((lc.get(y).getPoint()+" "+point)+"  "+(lc.get(y).getSuit()+" "+suit));
+              if(lc.get(y).getPoint().equals(point)&&lc.get(y).getSuit().equals(suit)){
+
+                  card requestCard=lc.get(y);
+                  lc.remove(y);         // delete card for oplayer
+
+                  for(int z=0;z<l.size();z++){       // add card for cplayer
+
+                      if(l.get(z).getId()==getPlayerID(cplayer)){
+                          l.get(z).getCards().add(requestCard);
+
+                      }
+                  }
+
+
+              }
+           }
+       }
+   }
+        return g;
+
+    }
 
     public List<team> initTeam(){
         List<team> lit=new ArrayList<>();
