@@ -54,7 +54,7 @@ public class UserController {
     public game addPoint(HttpSession session,@RequestParam String cards,@RequestParam String cplayer,@RequestParam String cteam) throws BadRequestException {
         game g=(game)session.getAttribute("game");
 
-       System.out.println(cards);
+//       System.out.println(cards);
         request re = JSON.parseObject(cards, request.class);
     List<card> clist=re.getCards();
     String suit=clist.get(0).getSuit();
@@ -70,13 +70,13 @@ public class UserController {
 //            }
 //        }
 
-//        ComparatorCard comparator=new ComparatorCard();
-//        Collections.sort(clist, comparator);
-//
-//        for (int i=0;i<clist.size();i++){
-//           card user_temp=clist.get(i);
-//            System.out.println(user_temp.getSuit()+" :"+user_temp.getPoint());
-//        }
+        ComparatorCard comparator=new ComparatorCard();
+        Collections.sort(clist, comparator);
+
+        for (int i=0;i<clist.size();i++){
+           card user_temp=clist.get(i);
+            System.out.println(user_temp.getSuit()+" :"+user_temp.getPoint());
+        }
 
 
 
@@ -85,13 +85,13 @@ public class UserController {
         for(int x=0;x<playerlist.size();x++) {
             if (playerlist.get(x).getId() == Integer.parseInt(cplayer)) {
                 List<card> lc=playerlist.get(x).getCards();
-                System.out.println(lc.size()+"  "+clist.size());
+//                System.out.println(lc.size()+"  "+clist.size());
 
                     for(int z=0;z<clist.size();z++){
-                        System.out.println("size"+lc.size());
+//                        System.out.println("size"+lc.size());
                         for(int y=0;y<lc.size();y++){
                         if(lc.get(y).getPoint().equals(clist.get(z).getPoint())&&lc.get(y).getSuit().equals(clist.get(z).getSuit())){
-                            System.out.println("remove");
+//                            System.out.println("remove");
                                lc.remove(y);
                         }
                     }
