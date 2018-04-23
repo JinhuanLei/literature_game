@@ -18,33 +18,38 @@ var x = -70;
 var y = 330;
 var size = 120;
 var weight = 90;
-var cardMargin = 50;
 var game = {};
 var currentPlayer = 1;
 var currentTeam = "A";
 var opponentPlayer;
-
+var click=[];
+var position;
+var check=0;
 
 function viewCards(uid) {
     redraw();
-    var players = game.players;
-
-    players.forEach((value, key, arr) => {
-        // console.log(value.id+"  "+uid+" ");
-        // console.log(String(value.id)==uid);
-        if (String(value.id) == uid) {
-
-            value.cards.forEach((value, key, arr) => {
+    var cards=findCardsByID(uid);
+    console.log(cards)
+    cards.forEach((value, key, arr) => {
                 canvas.drawPokerCard(x += weight, y, size, value.suit, value.point);
             })
-        }
-    })
+}
 
+function findCardsByID(uid) {
+    var players = game.players;
+    var cards={};
+    players.forEach((value, key, arr) => {
+        if (String(value.id) == uid) {
+
+          cards=value.cards;
+    }
+    })
+    return cards;
 }
 
 function addCard() {
     if (x == 1190) {
-        y += 90;
+        y += 120;
         x = -70;
     }
     canvas.drawPokerCard(x += weight, y, size, "c", "6");
@@ -52,12 +57,52 @@ function addCard() {
 }
 
 document.getElementById('myowncanvas').addEventListener('click', function(e) {
-    var x = e.layerX / cardMargin;
-    console.log(e)
+    var cx = Math.ceil((e.layerX-40)/weight)-1;
+    var cy = Math.ceil((e.layerY-340)/size)-1;
+    // console.log(e)
+    var cards=findCardsByID(currentPlayer);
+    // console.log(cards[cx+cy*14]);
+
+    for(var i=0; i<click.length; i++){
+       // console.log(click[i]+"  "+(cx+cy*14))
+        if(click[i]==(cx+cy*14)){
+           position=i;
+           check=1;     //remain
+            console.log("check");
+        }
+    }
+
+    if(check==1){
+      check=0;
+      click.splice(position,1);
+    }else {
+        if((cx+cy*14)>=0&&(cx+cy*14)<cards.length){
+            click.push(cx+cy*14);
+        }
+    }
+
+  console.log(click);
+    redraw();
+    cards.forEach((value, key, arr) => {
+
+     if(findKey(key)){
+         canvas.drawPokerCard(x += weight, y-30, size, value.suit, value.point);
+     }else{
+         canvas.drawPokerCard(x += weight, y, size, value.suit, value.point);
+
+     }
+
+    })
 
 });
 
-
+function findKey(key) {
+    for(var i=0; i<click.length; i++){
+        if(key==click[i]){
+           return true;
+        }
+    }
+}
 function redraw() {
     canvas.clearRect(0, 0, 1400, 600);
     x = -70;
@@ -151,5 +196,48 @@ function showTime(){
 
 
 function addPoint() {
+var cards=findCardsByID(currentPlayer);
+var suit=cards[click[0]].suit;
 
+var points=[];
+   for(var x=0;x<click.length;x++){
+       var tsuit=cards[click[x]].suit;
+       var tpoint=cards[click[x]].point;
+       if(suit!=tsuit){
+$('#wrong').css("display","block");
+           return;
+       }
+       points.push(tpoint);
+    }
+
+points.sort(sortNumber)
+   console.log(points);
+
+}
+
+function sortNumber(a,b)
+{
+    // if(a=="a"){
+    //     return true;
+    // }
+    // if(b=="false"){
+    //     return false;
+    // }
+    // return (a-b);
+    if(a=="10"){
+        a="99";
+    }
+    if(b=="10"){
+        b="99";
+    }
+    if (a < b)
+    {
+        return -1;
+    }
+    else if (a > b)
+    {
+        return 1;
+    } else {
+        return 0;
+    }
 }
