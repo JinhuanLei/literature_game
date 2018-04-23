@@ -28,6 +28,7 @@ var check=0;
 
 function viewCards(uid) {
     redraw();
+    click=[];
     var cards=findCardsByID(uid);
     console.log(cards)
     cards.forEach((value, key, arr) => {
@@ -196,9 +197,10 @@ function showTime(){
 
 
 function addPoint() {
+    $('#wrong').css("display","none");
 var cards=findCardsByID(currentPlayer);
 var suit=cards[click[0]].suit;
-
+var clickCards=[];
 var points=[];
    for(var x=0;x<click.length;x++){
        var tsuit=cards[click[x]].suit;
@@ -208,12 +210,50 @@ $('#wrong').css("display","block");
            return;
        }
        points.push(tpoint);
+       clickCards.push(cards[click[x]]);
     }
 
 points.sort(sortNumber)
-   console.log(points);
+   // if(point[0]==3&&
+   //     point[1]==4&&
+   //     point[2]==5&&
+   //     point[3]==6&&
+   //     point[4]==7&&
+   //     point[5]==8){
+   //     sendPoint(1,clickCards)
+   // }
+   // else if(point[0]==9&&
+   //     point[1]==10&&
+   //     point[2]=="j"&&
+   //     point[3]=="q"&&
+   //     point[4]=="k"&&
+   //     point[5]=="a"){
+   //     sendPoint(2,clickCards)
+   // }else{
+   //     $('#wrong').css("display","block");
+   //     return;
+   // }
+    console.log(clickCards);
+var temp={"cards":clickCards};
+    $.ajax({
+        url:"/api/v1/addpoint",
+        method:"POST",
+        dataType:"json",
+        data:{ cards:JSON.stringify(temp),
+            cplayer:currentPlayer,
+            cteam:currentTeam},
+        success: (data)=>{
+            console.log(data);
+            game=data;
+            viewCards(currentPlayer);
+        },
+        error:(error)=>{
+            $('#wrong').css("display","block");
+        }
+    })
 
 }
+
 
 function sortNumber(a,b)
 {

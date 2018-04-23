@@ -1,15 +1,14 @@
 package com.jinhuan.literature_game.controllers;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.jinhuan.literature_game.exceptions.BadRequestException;
-import com.jinhuan.literature_game.models.card;
-import com.jinhuan.literature_game.models.game;
-import com.jinhuan.literature_game.models.player;
-import com.jinhuan.literature_game.models.team;
+import com.jinhuan.literature_game.models.*;
 import com.jinhuan.literature_game.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -53,6 +52,73 @@ public class UserController {
 
     }
 
+    @RequestMapping(value = "/api/v1/addpoint", method = RequestMethod.POST)
+    public game addPoint(HttpSession session,@RequestParam String cards,@RequestParam String cplayer,@RequestParam String cteam) throws BadRequestException {
+        game g=(game)session.getAttribute("game");
+
+//        System.out.println(cards);
+        request re = JSON.parseObject(cards, request.class);
+    List<card> clist=re.getCards();
+    String suit=clist.get(0).getSuit();
+    String[] match1={"3","4","5","6","7","8"};
+    String[] match2={"9","10","j","q","k","a"};
+//    if(clist.size()!=6){
+//        throw new BadRequestException();
+//    }
+//        for(int x=0;x<clist.size();x++){
+//            if(!(clist.get(x).getSuit().equals(suit))){
+//                throw new BadRequestException();
+//            }
+//        }
+
+        List<player> playerlist=g.getPlayers();       // success validation
+        for(int x=0;x<playerlist.size();x++) {
+            if (playerlist.get(x).getId() == Integer.parseInt(cplayer)) {
+                List<card> lc=playerlist.get(x).getCards();
+
+                for(int y=0;y<lc.size();y++){
+
+                    for(int z=0;z<clist.size();z++){
+                        if(lc.get(y).getPoint().equals(clist.get(z).getPoint())&&lc.get(y).getSuit().equals(clist.get(z).getSuit())){
+                            System.out.println("remove");
+                            lc.remove(y);
+                        }
+                    }
+                }
+                playerlist.get(x).setCards(lc);
+                g.setPlayers(playerlist);
+
+            }
+
+        }
+
+        List<team> teamlist=g.getTeams();
+
+        for(int x=0;x<teamlist.size();x++){
+            if(teamlist.get(x).getId().equals(cteam)){
+                teamlist.get(x).setPoint(teamlist.get(x).getPoint()+1);
+
+            }
+        }
+        g.setTeams(teamlist);
+        session.setAttribute("game",g);     //??
+        return g;
+    }
+
+    public boolean compareCard(String[] match, List<card> list){
+        for(int m=0;m<match.length;m++){
+            int flag=0;
+            for(int x=0;x<list.size();x++){
+                if((match[m].equals(list.get(x).getPoint()))){
+                    flag=1;
+                }
+            }
+            if(flag==0){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
     @RequestMapping(value = "/api/v1/game", method = RequestMethod.POST)
@@ -80,7 +146,9 @@ public class UserController {
 
                       if(l.get(z).getId()==Integer.parseInt(cplayer)){
                           l.get(z).getCards().add(requestCard);
+                    session.setAttribute("game",g);     //??
                      return g;
+
                       }
                   }
 

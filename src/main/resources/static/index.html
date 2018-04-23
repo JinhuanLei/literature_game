@@ -58,9 +58,9 @@
             <!--<button type="submit" class="btn btn-primary" onclick="addCard()">Add</button>-->
         <!--</div>-->
     </div>
-    <div id="menu" style="z-index:1; position: absolute; top:100px; left:50px; display: none"  class="col-md-10">
+    <div id="menu" style="z-index:1; position: absolute; top:100px; left:50px; display: none"  class="col-md-12">
         <!--<div>-->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label>Choose your opponent :</label>
             <select class="form-control" style="" id="players">
                 <!--<option disabled selected value> &#45;&#45; select a player &#45;&#45; </option>-->
@@ -71,7 +71,7 @@
             </select>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label>Choose your suit :</label>
             <select class="form-control" style="" id="suits">
                 <option value="h" selected="selected">&hearts; Hearts</option>
@@ -80,7 +80,7 @@
                 <option value="c">&clubs; Clubs</option>
             </select>
         </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label>Choose your point :</label>
                 <select class="form-control" style="" id="points">
                     <option value="a" selected="selected">A</option>
@@ -99,8 +99,13 @@
             </div>
         <div class="col-md-3">
             <button type="submit" class="btn btn-primary" onclick="requestCard()" style="margin-top: 25px">Request Card</button>
-            <button type="submit" class="btn btn-success" onclick="addPoint()" style="margin-top: 25px; margin-left: 20px; ">Get Point !</button>
+
         </div>
+        <div class="col-md-3">
+
+            <button type="submit" class="btn btn-success" onclick="addPoint()" style="margin-top: 25px; margin-left: 80px ">Get Point !</button>
+        </div>
+
         <div class="col-md-10">
             <label style="color: #873920; display: none" id="error"> The User does not have that card ! Ready to change next User !</label>
         </div>
