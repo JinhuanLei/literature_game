@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -39,14 +40,11 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
-//        System.out.println("start mvc");
         return new ModelAndView("index.html");
     }
 
     @RequestMapping(value = "/api/v1/game", method = RequestMethod.GET)
     public game initialGame(HttpSession session) {
-        System.out.println("start mvc");
-
         session.setAttribute("game",g);
         return g;
 
@@ -56,12 +54,13 @@ public class UserController {
     public game addPoint(HttpSession session,@RequestParam String cards,@RequestParam String cplayer,@RequestParam String cteam) throws BadRequestException {
         game g=(game)session.getAttribute("game");
 
-//        System.out.println(cards);
+       System.out.println(cards);
         request re = JSON.parseObject(cards, request.class);
     List<card> clist=re.getCards();
     String suit=clist.get(0).getSuit();
     String[] match1={"3","4","5","6","7","8"};
     String[] match2={"9","10","j","q","k","a"};
+    Boolean[] cardMatch={false,false,false,false,false,false};
 //    if(clist.size()!=6){
 //        throw new BadRequestException();
 //    }
@@ -71,20 +70,33 @@ public class UserController {
 //            }
 //        }
 
+//        ComparatorCard comparator=new ComparatorCard();
+//        Collections.sort(clist, comparator);
+//
+//        for (int i=0;i<clist.size();i++){
+//           card user_temp=clist.get(i);
+//            System.out.println(user_temp.getSuit()+" :"+user_temp.getPoint());
+//        }
+
+
+
         List<player> playerlist=g.getPlayers();       // success validation
+
         for(int x=0;x<playerlist.size();x++) {
             if (playerlist.get(x).getId() == Integer.parseInt(cplayer)) {
                 List<card> lc=playerlist.get(x).getCards();
-
-                for(int y=0;y<lc.size();y++){
+                System.out.println(lc.size()+"  "+clist.size());
 
                     for(int z=0;z<clist.size();z++){
+                        System.out.println("size"+lc.size());
+                        for(int y=0;y<lc.size();y++){
                         if(lc.get(y).getPoint().equals(clist.get(z).getPoint())&&lc.get(y).getSuit().equals(clist.get(z).getSuit())){
                             System.out.println("remove");
-                            lc.remove(y);
+                               lc.remove(y);
                         }
                     }
                 }
+
                 playerlist.get(x).setCards(lc);
                 g.setPlayers(playerlist);
 

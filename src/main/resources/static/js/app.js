@@ -82,7 +82,7 @@ document.getElementById('myowncanvas').addEventListener('click', function(e) {
         }
     }
 
-  console.log(click);
+  // console.log(click);
     redraw();
     cards.forEach((value, key, arr) => {
 
@@ -199,40 +199,10 @@ function showTime(){
 function addPoint() {
     $('#wrong').css("display","none");
 var cards=findCardsByID(currentPlayer);
-var suit=cards[click[0]].suit;
 var clickCards=[];
-var points=[];
    for(var x=0;x<click.length;x++){
-       var tsuit=cards[click[x]].suit;
-       var tpoint=cards[click[x]].point;
-       if(suit!=tsuit){
-$('#wrong').css("display","block");
-           return;
-       }
-       points.push(tpoint);
        clickCards.push(cards[click[x]]);
     }
-
-points.sort(sortNumber)
-   // if(point[0]==3&&
-   //     point[1]==4&&
-   //     point[2]==5&&
-   //     point[3]==6&&
-   //     point[4]==7&&
-   //     point[5]==8){
-   //     sendPoint(1,clickCards)
-   // }
-   // else if(point[0]==9&&
-   //     point[1]==10&&
-   //     point[2]=="j"&&
-   //     point[3]=="q"&&
-   //     point[4]=="k"&&
-   //     point[5]=="a"){
-   //     sendPoint(2,clickCards)
-   // }else{
-   //     $('#wrong').css("display","block");
-   //     return;
-   // }
     console.log(clickCards);
 var temp={"cards":clickCards};
     $.ajax({
