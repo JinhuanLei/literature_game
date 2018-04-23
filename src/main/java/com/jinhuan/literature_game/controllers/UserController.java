@@ -1,5 +1,6 @@
 package com.jinhuan.literature_game.controllers;
 
+import com.jinhuan.literature_game.exceptions.BadRequestException;
 import com.jinhuan.literature_game.models.card;
 import com.jinhuan.literature_game.models.game;
 import com.jinhuan.literature_game.models.player;
@@ -53,16 +54,10 @@ public class UserController {
 
     }
 
-    public int getPlayerID(String player){
-        String regEx="[^0-9]";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(player);
-        int pid=Integer.parseInt(m.replaceAll("").trim());
-        return pid;
-    }
+
 
     @RequestMapping(value = "/api/v1/game", method = RequestMethod.POST)
-    public game requestCard(HttpSession session, @RequestParam String oplayer, @RequestParam String cplayer, @RequestParam String suit, @RequestParam String point) {
+    public game requestCard(HttpSession session, @RequestParam String oplayer, @RequestParam String cplayer, @RequestParam String suit, @RequestParam String point) throws BadRequestException {
         System.out.println(suit);
 
    game g=(game)session.getAttribute("game");
@@ -70,7 +65,7 @@ public class UserController {
 
         for(int x=0;x<l.size();x++){
 //                      System.out.println(l.get(x).getId()+" "+getPlayerID(oplayer));
-       if(l.get(x).getId()==getPlayerID(oplayer)){
+       if(l.get(x).getId()==Integer.parseInt(oplayer)){
 
            List<card> lc=l.get(x).getCards();
 
@@ -84,9 +79,9 @@ public class UserController {
 
                   for(int z=0;z<l.size();z++){       // add card for cplayer
 
-                      if(l.get(z).getId()==getPlayerID(cplayer)){
+                      if(l.get(z).getId()==Integer.parseInt(cplayer)){
                           l.get(z).getCards().add(requestCard);
-
+                     return g;
                       }
                   }
 
@@ -95,7 +90,7 @@ public class UserController {
            }
        }
    }
-        return g;
+        throw new BadRequestException();
 
     }
 

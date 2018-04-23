@@ -22,12 +22,13 @@ var cardMargin = 50;
 var game = {};
 var currentPlayer = 1;
 var currentTeam = "A";
-var currentTeamPoint = 0;
+var opponentPlayer;
 
 
 function viewCards(uid) {
     redraw();
     var players = game.players;
+
     players.forEach((value, key, arr) => {
         // console.log(value.id+"  "+uid+" ");
         // console.log(String(value.id)==uid);
@@ -67,21 +68,22 @@ function redrawTitle() {
     canvas.font = '30px serif';
     canvas.fillStyle = 'Black';
     canvas.fillText('Current Player: Player ' + currentPlayer, 10, 50);
-    canvas.fillText('Current Team: Team ' + currentTeam, 510, 50);
-    canvas.fillText('Team Point: ' + getPoint(currentTeam), 1010, 50);
-
-    // $("#players option:contains('Player " + currentPlayer + "')").attr("disabled","disabled");
-    // console.log(currentPlayer / 4)
     if (currentPlayer / 3 <= 1) {
+        currentTeam="A";
+        canvas.fillText('Current Team: Team ' + currentTeam, 510, 50);
+        canvas.fillText('Team Point: ' + getPoint(currentTeam), 1010, 50);
         $("#players").empty();
-        $("#players").append("<option value='Player 4'>Player 4</option>");
-        $("#players").append("<option value='Player 5'>Player 5</option>");
-        $("#players").append("<option value='Player 6'>Player 6</option>");
+        $("#players").append("<option value='4'>Player 4</option>");
+        $("#players").append("<option value='5'>Player 5</option>");
+        $("#players").append("<option value='6'>Player 6</option>");
     } else {
+        currentTeam="B";
+        canvas.fillText('Current Team: Team ' + currentTeam, 510, 50);
+        canvas.fillText('Team Point: ' + getPoint(currentTeam), 1010, 50);
         $("#players").empty();
-        $("#players").append("<option value='Player 1'>Player 1</option>");
-        $("#players").append("<option value='Player 2'>Player 2</option>");
-        $("#players").append("<option value='Player 3'>Player 3</option>");
+        $("#players").append("<option value='1'>Player 1</option>");
+        $("#players").append("<option value='2'>Player 2</option>");
+        $("#players").append("<option value='3'>Player 3</option>");
 
     }
 }
@@ -106,19 +108,48 @@ function start() {
 }
 
 function requestCard() {
+    $("#success").css("display","none");
+    $("#error").css("display","none");
     var opponent=$('#players').val();
     var point=$('#points').val();
     var suit=$('#suits').val();
-    console.log(suit+" "+point);
+    opponentPlayer=opponent;
+    console.log(opponent+" ");
     $.ajax({
         url:"/api/v1/game",
         method:"POST",
         data:{"cplayer":currentPlayer,"oplayer":opponent,"point":point,"suit":suit},
         success:(data)=>{
             game=data;
+            $("#success").css("display","block");
             console.log(data);
+            viewCards(currentPlayer);
+        },
+        error:(err)=>{
+            $("#error").css("display","block");
+            t=4;
+            showTime();
         }
     })
 
+
+}
+var t=4;
+function showTime(){
+    t -= 1;
+    document.getElementById('error').innerHTML= "The User does not have that card ! Ready to change next User : "+t;
+    if(t==0){
+        $("#error").css("display","none");
+        currentPlayer=opponentPlayer;
+        viewCards(currentPlayer);
+
+        return;
+    }
+    //每秒执行一次,showTime()
+    setTimeout("showTime()",1000);
+}
+
+
+function addPoint() {
 
 }
