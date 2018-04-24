@@ -166,7 +166,7 @@ public class UserController {
 
     @RequestMapping(value = "/api/v1/game", method = RequestMethod.POST)
     public game requestCard(HttpSession session, @RequestParam String oplayer, @RequestParam String cplayer, @RequestParam String suit, @RequestParam String point) throws BadRequestException {
-        System.out.println(suit);
+//        System.out.println(suit);
 
    game g=(game)session.getAttribute("game");
    List<player> l=g.getPlayers();

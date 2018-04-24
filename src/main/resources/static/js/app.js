@@ -192,7 +192,7 @@ function showTime(){
 
         return;
     }
-    //每秒执行一次,showTime()
+
     setTimeout("showTime()",1000);
 }
 
