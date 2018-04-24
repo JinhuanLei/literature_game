@@ -198,6 +198,7 @@ function showTime(){
 
 
 function addPoint() {
+   // document.getElementById("success").style.display="none";
     $("#success").css("display","none");
     $("#error").css("display","none");
     $("#wrong").css("display","none");
