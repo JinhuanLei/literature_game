@@ -156,6 +156,7 @@ function start() {
 function requestCard() {
     $("#success").css("display","none");
     $("#error").css("display","none");
+    $("#wrong").css("display","none");
     var opponent=$('#players').val();
     var point=$('#points').val();
     var suit=$('#suits').val();
@@ -197,7 +198,9 @@ function showTime(){
 
 
 function addPoint() {
-    $('#wrong').css("display","none");
+    $("#success").css("display","none");
+    $("#error").css("display","none");
+    $("#wrong").css("display","none");
 var cards=findCardsByID(currentPlayer);
 var clickCards=[];
    for(var x=0;x<click.length;x++){

@@ -60,17 +60,21 @@ public class UserController {
     String suit=clist.get(0).getSuit();
     String[] match1={"3","4","5","6","7","8"};
     String[] match2={"9","10","j","q","k","a"};
-    Boolean[] cardMatch={false,false,false,false,false,false};
-//    if(clist.size()!=6){
-//        throw new BadRequestException();
-//    }
-//        for(int x=0;x<clist.size();x++){
-//            if(!(clist.get(x).getSuit().equals(suit))){
-//                throw new BadRequestException();
-//            }
-//        }
+//        String[] match1={"3","4","5"};
+//        String[] match2={"q","k","a"};
 
-        ComparatorCard comparator=new ComparatorCard();
+    if(clist.size()!=6){                  //fundamental requirement
+        System.out.println("Wrong size");
+        throw new BadRequestException();
+    }
+        for(int x=0;x<clist.size();x++){
+            if(!(clist.get(x).getSuit().equals(suit))){
+                System.out.println("Wrong suit");
+                throw new BadRequestException();
+            }
+        }
+
+        ComparatorCard comparator=new ComparatorCard();    //order
         Collections.sort(clist, comparator);
 
         for (int i=0;i<clist.size();i++){
@@ -78,6 +82,28 @@ public class UserController {
             System.out.println(user_temp.getSuit()+" :"+user_temp.getPoint());
         }
 
+         Boolean flag1=true;
+         Boolean flag2=true;
+      for(int x=0;x<clist.size();x++){
+
+              if(!(clist.get(x).getPoint().equals(match1[x]))){
+                  flag1=false;
+              }
+
+
+      }
+        for(int x=0;x<clist.size();x++){
+
+            if(!(clist.get(x).getPoint()!=match2[x])){
+                flag2=false;
+            }
+        }
+        if(!(flag1||flag2)){
+             flag1=true;
+             flag2=true;
+            System.out.println("Wrong combination");
+            throw new BadRequestException();
+        }
 
 
         List<player> playerlist=g.getPlayers();       // success validation
@@ -108,7 +134,12 @@ public class UserController {
 
         for(int x=0;x<teamlist.size();x++){
             if(teamlist.get(x).getId().equals(cteam)){
-                teamlist.get(x).setPoint(teamlist.get(x).getPoint()+1);
+                if(flag1){
+                    teamlist.get(x).setPoint(teamlist.get(x).getPoint()+1);
+                }else {
+                    teamlist.get(x).setPoint(teamlist.get(x).getPoint()+2);
+                }
+
 
             }
         }
