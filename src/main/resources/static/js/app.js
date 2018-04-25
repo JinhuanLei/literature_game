@@ -32,6 +32,11 @@ function viewCards(uid) {
     var cards=findCardsByID(uid);
     console.log(cards)
     cards.forEach((value, key, arr) => {
+        if (x == 1190) {
+            y += 120;
+            x = -70;
+        }
+        // console.log(x);
                 canvas.drawPokerCard(x += weight, y, size, value.suit, value.point);
             })
 }
@@ -82,10 +87,13 @@ document.getElementById('myowncanvas').addEventListener('click', function(e) {
         }
     }
 
-  // console.log(click);
+  console.log(click);
     redraw();
     cards.forEach((value, key, arr) => {
-
+        if (x == 1190) {
+            y += 120;
+            x = -70;
+        }
      if(findKey(key)){
          canvas.drawPokerCard(x += weight, y-30, size, value.suit, value.point);
      }else{
@@ -107,6 +115,7 @@ function findKey(key) {
 function redraw() {
     canvas.clearRect(0, 0, 1400, 600);
     x = -70;
+    y=330;
     redrawTitle();
 }
 
