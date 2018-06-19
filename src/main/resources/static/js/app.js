@@ -183,14 +183,14 @@ function requestCard() {
         },
         error:(err)=>{
             $("#error").css("display","block");
-            t=4;
+            t=3;
             showTime();
         }
     })
 
 
 }
-var t=4;
+var t=3;
 function showTime(){
     t -= 1;
     document.getElementById('error').innerHTML= "The User does not have that card ! Ready to change next User : "+t;

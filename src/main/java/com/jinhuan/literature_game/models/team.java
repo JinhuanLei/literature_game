@@ -1,6 +1,5 @@
 package com.jinhuan.literature_game.models;
 
-import java.util.List;
 
 public class team {
     private String id;
