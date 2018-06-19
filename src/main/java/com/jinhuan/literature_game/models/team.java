@@ -2,7 +2,7 @@ package com.jinhuan.literature_game.models;
 
 
 public class team {
-    private String ids;
+    private String id;
     private int point;
 
     public String getId() {
